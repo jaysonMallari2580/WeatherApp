@@ -80,6 +80,8 @@ class MainViewModel : ViewModel() {
         return degreesInFahrenheit
     }
 
+
+
 }
 
 

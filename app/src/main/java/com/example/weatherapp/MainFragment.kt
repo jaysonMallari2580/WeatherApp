@@ -1,19 +1,16 @@
 package com.example.weatherapp
 
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.bumptech.glide.module.AppGlideModule
 import com.example.weatherapp.databinding.MainFragmentBinding
 
 class MainFragment: Fragment() {
@@ -23,6 +20,11 @@ class MainFragment: Fragment() {
 
     companion object {
         fun newInstance() = MainFragment()
+
+        fun View.hideKeyboard() {
+            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(windowToken, 0)
+        }
     }
 
     private lateinit var viewModel: MainViewModel
@@ -61,9 +63,20 @@ class MainFragment: Fragment() {
 
         binding.searchIcon.setOnClickListener(View.OnClickListener {
 
-            var cityName = binding.searchEdittext.editText
-            binding.test.text = cityName?.text
-            viewModel.passMeTheCityName(cityName?.text.toString())
+            var cityName = binding.searchEdittext.editText?.text.toString()
+            /*binding.test.text = cityName?.text*/
+            viewModel.passMeTheCityName(cityName)
+
+
+
+            val toast = Toast.makeText(context,"You have entered $cityName. . .",Toast.LENGTH_LONG)
+            toast.show()
+
+            it.hideKeyboard()
+            binding.searchEdittext.editText?.setText("")
+
         })
     }
+
+
 }
